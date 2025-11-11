@@ -11,7 +11,7 @@ const BMIPage: React.FC = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom>BMI-kalkulator</Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          <b>Om denne funksjonen:</b> Beregn din BMI (kroppsmasseindeks) basert på høyde og vekt.
+          <b> </b> Beregn din BMI (kroppsmasseindeks) basert på høyde og vekt.
         </Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Vekt (kg)" fullWidth value={weight} onChange={e => setWeight(+e.target.value)} />

@@ -9,7 +9,7 @@ const Weight: React.FC = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom>Vektomregner</Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          <b>Om denne funksjonen:</b> Konverter mellom kilo, pund, unser og stein. Skriv inn vekt i kilo for å se resultatene i andre enheter.
+          <b> </b> Konverter mellom kilo, pund, unser og stein. Skriv inn vekt i kilo for å se resultatene i andre enheter.
         </Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Kilogram" fullWidth value={kg} onChange={e => setKg(+e.target.value)} />

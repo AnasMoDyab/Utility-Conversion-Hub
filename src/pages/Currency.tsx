@@ -35,7 +35,7 @@ const Currency: React.FC = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom>Valutakalkulator</Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          <b>Om denne funksjonen:</b> Konverter beløp mellom valutaer ved hjelp av sanntidskurser fra Open Exchange Rates. Gratis-planen bruker alltid USD som basis.
+          <b> </b> Konverter beløp mellom valutaer ved hjelp av sanntidskurser fra Open Exchange Rates. Gratis-planen bruker alltid USD som basis.
         </Typography>
         {loading && <Alert severity="info" icon={<CircularProgress size={18} />}>Laster kurser...</Alert>}
         {error && <Alert severity="error">Feil ved henting av kurser: {error}</Alert>}

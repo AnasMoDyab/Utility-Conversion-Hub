@@ -11,7 +11,7 @@ const LoanPage: React.FC = () => {
     <Card variant="outlined" sx={{ maxWidth: 760 }}>
       <CardContent>
         <Typography variant="h5" gutterBottom>Lån & Boliglån</Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom><b>Om denne funksjonen:</b> Beregn månedlig terminbeløp og total rente over løpetiden.</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom><b> </b> Beregn månedlig terminbeløp og total rente over løpetiden.</Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Beløp (kr)" fullWidth value={principal} onChange={e => setPrincipal(+e.target.value)} />
           <TextField type="number" label="Årlig rente (%)" fullWidth value={rate} onChange={e => setRate(+e.target.value)} />

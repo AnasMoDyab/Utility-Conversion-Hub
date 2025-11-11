@@ -10,7 +10,7 @@ const HexBinaryPage: React.FC = () => {
     <Card variant="outlined" sx={{ maxWidth: 680 }}>
       <CardContent>
         <Typography variant="h5" gutterBottom>Hex/Bin-omregner</Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom><b>Om denne funksjonen:</b> Konverter mellom desimal, heksadesimal og binær for enkel utviklerbruk.</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom><b> </b> Konverter mellom desimal, heksadesimal og binær for enkel utviklerbruk.</Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Desimal" fullWidth value={dec} onChange={e => { const v = +e.target.value; setDec(v); setHex(decToHex(v)); setBin(decToBin(v)); }} />
           <TextField label="Hex" fullWidth value={hex} onChange={e => { const v = e.target.value.toUpperCase(); setHex(v); if (/^[0-9A-F]*$/.test(v) && v) { const d = hexToDec(v); setDec(d); setBin(decToBin(d)); } }} />

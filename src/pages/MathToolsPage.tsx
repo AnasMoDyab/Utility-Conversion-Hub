@@ -11,7 +11,7 @@ const MathToolsPage: React.FC = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom>Enkle matteverktøy</Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          <b>Om denne funksjonen:</b> Regn ut fakultet, kvadratrot og potens. Skriv inn tall og parametre.
+          <b> </b> Regn ut fakultet, kvadratrot og potens. Skriv inn tall og parametre.
         </Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Tall" fullWidth value={num} onChange={e => setNum(+e.target.value)} />

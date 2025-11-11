@@ -12,7 +12,7 @@ const CookingPage: React.FC = () => {
     <Card variant="outlined" sx={{ maxWidth: 700 }}>
       <CardContent>
         <Typography variant="h5" gutterBottom>Matlagingsenheter</Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom><b>Om denne funksjonen:</b> Konverter mellom kopper, gram og unser basert på enkel ingrediensdensitet.</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom><b> </b> Konverter mellom kopper, gram og unser basert på enkel ingrediensdensitet.</Typography>
         <Stack spacing={2}>
           <TextField select fullWidth label="Ingrediens" value={ingredient} onChange={e => setIngredient(e.target.value)}>
             {ingredients.map(i => <MenuItem key={i} value={i}>{i}</MenuItem>)}

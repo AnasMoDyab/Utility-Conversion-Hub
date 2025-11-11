@@ -20,7 +20,7 @@ const ColorConverterPage: React.FC = () => {
     <Card variant="outlined" sx={{ maxWidth: 760 }}>
       <CardContent>
         <Typography variant="h5" gutterBottom>Fargekonvertering</Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom><b>Om denne funksjonen:</b> Konverter mellom HEX, RGB og HSL.</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom><b> </b> Konverter mellom HEX, RGB og HSL.</Typography>
         <Stack spacing={2}>
           <TextField label="HEX" fullWidth value={hex} onChange={e => setHex(e.target.value)} />
           <Box sx={{ display: 'flex', gap: 2 }}>

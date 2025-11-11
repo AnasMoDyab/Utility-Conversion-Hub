@@ -9,7 +9,7 @@ const VolumePage: React.FC = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom>Volumomregner</Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          <b>Om denne funksjonen:</b> Konverter mellom liter, milliliter, amerikanske gallon og kopper. Skriv inn volum i liter for å se resultatene i andre enheter.
+          <b> </b> Konverter mellom liter, milliliter, amerikanske gallon og kopper. Skriv inn volum i liter for å se resultatene i andre enheter.
         </Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Liter" fullWidth value={liters} onChange={e => setLiters(+e.target.value)} />

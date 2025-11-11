@@ -8,7 +8,7 @@ const FuelEfficiencyPage: React.FC = () => {
     <Card variant="outlined" sx={{ maxWidth: 620 }}>
       <CardContent>
         <Typography variant="h5" gutterBottom>Drivstoffeffektivitet</Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom><b>Om denne funksjonen:</b> Konverter mellom L/100km og miles per gallon (mpg, US).</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom><b> </b> Konverter mellom L/100km og miles per gallon (mpg, US).</Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Liter per 100 km" fullWidth value={l100} onChange={e => setL100(+e.target.value)} />
           <Typography>mpg: {lPer100kmToMpg(l100).toFixed(2)}</Typography>

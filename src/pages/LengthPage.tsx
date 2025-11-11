@@ -9,7 +9,7 @@ const LengthPage: React.FC = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom>Lengde- og avstandskonvertering</Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          <b>Om denne funksjonen:</b> Konverter mellom meter, kilometer, fot, tommer og mil. Skriv inn lengde i meter for å se resultatene i andre enheter.
+          <b> </b> Konverter mellom meter, kilometer, fot, tommer og mil. Skriv inn lengde i meter for å se resultatene i andre enheter.
         </Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Meter" fullWidth value={meters} onChange={e => setMeters(+e.target.value)} />

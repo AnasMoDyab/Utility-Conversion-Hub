@@ -9,7 +9,7 @@ const SpeedPage: React.FC = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom>Fartskonvertering</Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          <b>Om denne funksjonen:</b> Konverter mellom km/t, mph og m/s. Skriv inn fart i km/t for å se resultatene i andre enheter.
+          <b> </b> Konverter mellom km/t, mph og m/s. Skriv inn fart i km/t for å se resultatene i andre enheter.
         </Typography>
         <Stack spacing={2}>
           <TextField type="number" label="km/t" fullWidth value={kmh} onChange={e => setKmh(+e.target.value)} />

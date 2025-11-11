@@ -8,7 +8,7 @@ const PressurePage: React.FC = () => {
     <Card variant="outlined" sx={{ maxWidth: 620 }}>
       <CardContent>
         <Typography variant="h5" gutterBottom>Trykkonvertering</Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom><b>Om denne funksjonen:</b> Konverter mellom Pascal, Bar og PSI.</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom><b> </b> Konverter mellom Pascal, Bar og PSI.</Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Pascal (Pa)" fullWidth value={pa} onChange={e => setPa(+e.target.value)} />
           <Typography>Bar: {paToBar(pa).toFixed(5)}</Typography>

@@ -12,7 +12,7 @@ const PhysicsPage: React.FC = () => {
     <Card variant="outlined" sx={{ maxWidth: 720 }}>
       <CardContent>
         <Typography variant="h5" gutterBottom>Fysikkhjelper</Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom><b>Om denne funksjonen:</b> Enkel beregning av kraft (F=m·a), kinetisk energi og hastighet.</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom><b> </b> Enkel beregning av kraft (F=m·a), kinetisk energi og hastighet.</Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Masse (kg)" fullWidth value={mass} onChange={e => setMass(+e.target.value)} />
           <TextField type="number" label="Akselerasjon (m/s²)" fullWidth value={accel} onChange={e => setAccel(+e.target.value)} />

@@ -13,7 +13,7 @@ const PercentagePage: React.FC = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom>Prosentkalkulator</Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          <b>Om denne funksjonen:</b> Kalkuler rabatt, økning og reduksjon i prosent. Skriv inn verdi og prosent.
+          <b> </b> Kalkuler rabatt, økning og reduksjon i prosent. Skriv inn verdi og prosent.
         </Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Verdi" fullWidth value={value} onChange={e => setValue(+e.target.value)} />

@@ -12,7 +12,7 @@ const DateTimeTools: React.FC = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom>Dato- og tidverktøy</Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          <b>Om denne funksjonen:</b> Kalkuler alder ut fra fødselsdato, og konverter tidssoner (manuell offset).
+          <b> </b> Kalkuler alder ut fra fødselsdato, og konverter tidssoner (manuell offset).
         </Typography>
         <Stack spacing={2}>
           <TextField type="date" label="Fødselsdato" fullWidth value={dob} onChange={e => setDob(e.target.value)} InputLabelProps={{ shrink: true }} />

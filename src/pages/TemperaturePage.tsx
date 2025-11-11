@@ -9,7 +9,7 @@ const TemperaturePage: React.FC = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom>Temperaturomregner</Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          <b>Om denne funksjonen:</b> Konverter mellom Celsius, Fahrenheit og Kelvin. Skriv inn temperatur i Celsius for å se resultatene i andre enheter.
+          <b> </b> Konverter mellom Celsius, Fahrenheit og Kelvin. Skriv inn temperatur i Celsius for å se resultatene i andre enheter.
         </Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Celsius" fullWidth value={celsius} onChange={e => setCelsius(+e.target.value)} />

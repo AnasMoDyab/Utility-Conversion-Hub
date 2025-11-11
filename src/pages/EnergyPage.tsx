@@ -8,7 +8,7 @@ const EnergyPage: React.FC = () => {
     <Card variant="outlined" sx={{ maxWidth: 620 }}>
       <CardContent>
         <Typography variant="h5" gutterBottom>Energikonvertering</Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom><b>Om denne funksjonen:</b> Konverter energi mellom Joule, kilokalorier (kcal) og kWh.</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom><b> </b> Konverter energi mellom Joule, kilokalorier (kcal) og kWh.</Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Joule" fullWidth value={joule} onChange={e => setJoule(+e.target.value)} />
           <Typography>kcal: {jouleToKcal(joule).toFixed(4)}</Typography>

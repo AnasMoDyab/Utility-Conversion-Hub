@@ -28,6 +28,30 @@ import ScientificCalcPage from './pages/ScientificCalcPage';
 import PhysicsPage from './pages/PhysicsPage';
 import HexBinaryPage from './pages/HexBinaryPage';
 import ColorConverterPage from './pages/ColorConverterPage';
+import CalorieBurnPage from './pages/CalorieBurnPage';
+import RandomToolsPage from './pages/RandomToolsPage';
+import QRCodePage from './pages/QRCodePage';
+import Base64Page from './pages/Base64Page';
+import JSONToolsPage from './pages/JSONToolsPage';
+import MarkdownPage from './pages/MarkdownPage';
+import TextToolsPage from './pages/TextToolsPage';
+import PasswordStrengthPage from './pages/PasswordStrengthPage';
+import HashToolsPage from './pages/HashToolsPage';
+import JokeQuotePage from './pages/JokeQuotePage';
+import NameGeneratorPage from './pages/NameGeneratorPage';
+import EmojiTranslatorPage from './pages/EmojiTranslatorPage';
+import GamesPage from './pages/GamesPage';
+import DevToolsIndex from './pages/DevToolsIndex';
+import JsonCsvPage from './pages/dev/JsonCsvPage';
+import RegexPage from './pages/dev/RegexPage';
+import UuidJwtPage from './pages/dev/UuidJwtPage';
+import DiffPage from './pages/dev/DiffPage';
+import GradientPage from './pages/dev/GradientPage';
+import ResponsiveUnitPage from './pages/dev/ResponsiveUnitPage';
+import ApiPerfPage from './pages/dev/ApiPerfPage';
+import CheatsPage from './pages/dev/CheatsPage';
+import IconFinderPage from './pages/dev/IconFinderPage';
+
 
 
 
@@ -62,6 +86,29 @@ function App() {
           <Route path="/physics" element={<PhysicsPage />} />
           <Route path="/hex-binary" element={<HexBinaryPage />} />
           <Route path="/color" element={<ColorConverterPage />} />
+          <Route path="/calorie-burn" element={<CalorieBurnPage />} />
+          <Route path="/random-tools" element={<RandomToolsPage />} />
+          <Route path="/qr" element={<QRCodePage />} />
+          <Route path="/base64" element={<Base64Page />} />
+          <Route path="/json-tools" element={<JSONToolsPage />} />
+          <Route path="/markdown" element={<MarkdownPage />} />
+          <Route path="/text-tools" element={<TextToolsPage />} />
+          <Route path="/password-strength" element={<PasswordStrengthPage />} />
+          <Route path="/hash-tools" element={<HashToolsPage />} />
+          <Route path="/joke-quote" element={<JokeQuotePage />} />
+          <Route path="/name-gen" element={<NameGeneratorPage />} />
+          <Route path="/emoji-translator" element={<EmojiTranslatorPage />} />
+          <Route path="/games" element={<GamesPage />} />
+          <Route path="/dev-tools" element={<DevToolsIndex />} />
+          <Route path="/dev/json-csv" element={<JsonCsvPage />} />
+          <Route path="/dev/regex" element={<RegexPage />} />
+          <Route path="/dev/uuid-jwt" element={<UuidJwtPage />} />
+          <Route path="/dev/diff" element={<DiffPage />} />
+          <Route path="/dev/gradient" element={<GradientPage />} />
+          <Route path="/dev/responsive" element={<ResponsiveUnitPage />} />
+          <Route path="/dev/api" element={<ApiPerfPage />} />
+          <Route path="/dev/cheats" element={<CheatsPage />} />
+          <Route path="/dev/icons" element={<IconFinderPage />} />
         </Routes>
       </Layout>
     </Router>

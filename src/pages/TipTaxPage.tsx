@@ -12,7 +12,7 @@ const TipTaxPage: React.FC = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom>Tips- og avgiftskalkulator</Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          <b>Om denne funksjonen:</b> Beregn tips og avgift på regningen. Skriv inn beløp, tipsprosent og avgiftsprosent.
+          <b> </b> Beregn tips og avgift på regningen. Skriv inn beløp, tipsprosent og avgiftsprosent.
         </Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Regningsbeløp" fullWidth value={amount} onChange={e => setAmount(+e.target.value)} />

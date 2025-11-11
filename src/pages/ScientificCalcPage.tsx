@@ -10,7 +10,7 @@ const ScientificCalcPage: React.FC = () => {
     <Card variant="outlined" sx={{ maxWidth: 700 }}>
       <CardContent>
         <Typography variant="h5" gutterBottom>Vitenskapelig kalkulator</Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom><b>Om denne funksjonen:</b> Vis trigonometriske og logaritmiske verdier samt potensberegning.</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom><b> </b> Vis trigonometriske og logaritmiske verdier samt potensberegning.</Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Tall" fullWidth value={value} onChange={e => setValue(+e.target.value)} />
           <Typography>sin: {trigSin(value).toFixed(6)}</Typography>

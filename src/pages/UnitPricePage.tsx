@@ -11,7 +11,7 @@ const UnitPricePage: React.FC = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom>Enhetspriskalkulator</Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          <b>Om denne funksjonen:</b> Sammenlign pris per enhet. Skriv inn totalpris og antall for å finne pris per enhet.
+          <b> </b> Sammenlign pris per enhet. Skriv inn totalpris og antall for å finne pris per enhet.
         </Typography>
         <Stack spacing={2}>
           <TextField type="number" label="Totalpris" fullWidth value={total} onChange={e => setTotal(+e.target.value)} />
