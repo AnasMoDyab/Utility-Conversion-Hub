@@ -62,8 +62,11 @@ import RegisterTrix from './pages/RegisterTrix';
 
 
 function App() {
+  // Use PUBLIC_URL as basename so routing works when hosted on GitHub Pages
+  const basename = process.env.PUBLIC_URL || '/';
+
   return (
-    <Router>
+    <Router basename={basename}>
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />

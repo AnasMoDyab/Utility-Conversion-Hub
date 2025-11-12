@@ -2,6 +2,7 @@
   "name": "react-apps",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://AnasMoDyab.github.io/Utility-Conversion-Hub",
   "dependencies": {
     "@chakra-ui/react": "^3.29.0",
     "@emotion/react": "^11.14.0",
@@ -37,11 +38,14 @@
   },
   "devDependencies": {
     "@types/blueimp-md5": "^2.18.2",
-    "@types/zxcvbn": "^4.4.3"
+    "@types/zxcvbn": "^4.4.3",
+    "gh-pages": "^5.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
