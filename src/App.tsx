@@ -51,6 +51,11 @@ import ResponsiveUnitPage from './pages/dev/ResponsiveUnitPage';
 import ApiPerfPage from './pages/dev/ApiPerfPage';
 import CheatsPage from './pages/dev/CheatsPage';
 import IconFinderPage from './pages/dev/IconFinderPage';
+import SnakeGame from './pages/SnakeGame';
+import Minesweeper from './pages/Minesweeper';
+import Tenzies from './pages/Tenzies';
+import Puzzle15 from './pages/Puzzle15';
+import RegisterTrix from './pages/RegisterTrix';
 
 
 
@@ -109,6 +114,11 @@ function App() {
           <Route path="/dev/api" element={<ApiPerfPage />} />
           <Route path="/dev/cheats" element={<CheatsPage />} />
           <Route path="/dev/icons" element={<IconFinderPage />} />
+          <Route path="/snake" element={<SnakeGame />} />
+          <Route path="/minesweeper" element={<Minesweeper />} />
+          <Route path="/tenzies" element={<Tenzies />} />
+          <Route path="/puzzle-15" element={<Puzzle15 />} />
+          <Route path="/trix-register" element={<RegisterTrix />} />
         </Routes>
       </Layout>
     </Router>

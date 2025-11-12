@@ -82,6 +82,11 @@ const categories: NavCategory[] = [
     items: [
       { label: 'Tilfeldig', path: '/random-tools' },
       { label: 'Spill', path: '/games' },
+      { label: 'Snake', path: '/snake' },
+          { label: 'Minesweeper', path: '/minesweeper' },
+          { label: 'Tenzies', path: '/tenzies' },
+          { label: '15 Puzzle', path: '/puzzle-15' },
+          { label: 'Register Trix', path: '/trix-register' },
     ],
   },
   { title: 'Dev', items: [{ label: 'Dev Tools', path: '/dev-tools' }] },
