@@ -56,6 +56,10 @@ import Minesweeper from './pages/Minesweeper';
 import Tenzies from './pages/Tenzies';
 import Puzzle15 from './pages/Puzzle15';
 import RegisterTrix from './pages/RegisterTrix';
+import TimezonePlannerPage from './pages/TimezonePlannerPage';
+import ColorPalettePage from './pages/ColorPalettePage';
+import RegexTesterPage from './pages/RegexTesterPage';
+import QRCodeVCardPage from './pages/QRCodeVCardPage';
 
 
 
@@ -122,6 +126,10 @@ function App() {
           <Route path="/tenzies" element={<Tenzies />} />
           <Route path="/puzzle-15" element={<Puzzle15 />} />
           <Route path="/trix-register" element={<RegisterTrix />} />
+          <Route path="/timezone-planner" element={<TimezonePlannerPage />} />
+          <Route path="/color-palette" element={<ColorPalettePage />} />
+          <Route path="/regex" element={<RegexTesterPage />} />
+          <Route path="/qr-vcard" element={<QRCodeVCardPage />} />
         </Routes>
       </Layout>
     </Router>

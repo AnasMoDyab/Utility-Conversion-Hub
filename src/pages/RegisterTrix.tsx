@@ -15,6 +15,10 @@ import {
   TableCell,
   TableBody,
   IconButton,
+  Chip,
+  Tooltip,
+  Divider,
+  useMediaQuery
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 
@@ -129,28 +133,27 @@ const RegisterTrix: React.FC = () => {
     // Prevent adding a contract already used in this owner's kingdom
     const used = usage[owner] || []
     if (used.includes(contract)) {
-      // Do not add, silently ignore for now - could show notification
       setError('Contract already used in this kingdom')
       return
     }
-
-    // Trex validation: ensure inputs are permutation of 1..4
+    // Additional validation for Trex: ensure places are unique and within 1..4
     if (contract === 'Trex') {
-      const places = DEFAULT_PLAYERS.map((p) => inputs[p] || 0)
+      const places = DEFAULT_PLAYERS.map(p => inputs[p]).filter(v => v > 0)
       const unique = new Set(places)
-      const validRange = places.every((v) => Number.isInteger(v) && v >= 1 && v <= 4)
-      if (unique.size !== 4 || !validRange) {
-        setError('Trex requires unique places 1,2,3,4 for the players')
+      if (places.length !== unique.size) {
+        setError('Trex places must be unique')
+        return
+      }
+      if (places.some(p => p < 1 || p > 4)) {
+        setError('Trex places must be between 1 and 4')
         return
       }
     }
-
-  setError(null)
-  const scores = computeScores(contract, inputs)
+    setError(null)
+    const scores = computeScores(contract, inputs)
     const entry: DealEntry = { id: uid(), contract, owner, values: { ...inputs }, scores }
-    setDeals((d) => [entry, ...d])
-    setUsage((u) => ({ ...u, [owner]: [...(u[owner] || []), contract] }))
-    // reset inputs
+    setDeals(d => [entry, ...d])
+    setUsage(u => ({ ...u, [owner]: [...(u[owner] || []), contract] }))
     setInputs({ P1: 0, P2: 0, P3: 0, P4: 0 })
   }
 
@@ -217,134 +220,234 @@ const RegisterTrix: React.FC = () => {
   const totals = runningTotals()
   const partners = partnerTotals(totals)
 
+  // Helper for score chip colors
+  const scoreTone = (v:number) => {
+    if (v > 150) return 'success'
+    if (v > 0) return 'primary'
+    if (v === 0) return 'default'
+    if (v < -50) return 'error'
+    return 'warning'
+  }
+
+  // Adjusted palette for better contrast on dark background
+  const contractColor: Record<Contract, string> = {
+    King: '#c2185b',
+    Diamonds: '#996515',
+    Girls: '#673ab7',
+    Collections: '#0d6efd',
+    Trex: '#008f6f'
+  }
+
+  // Choose readable text color for chips based on luminance
+  function readableText(bg:string){
+    const h = bg.replace('#','')
+    const r = parseInt(h.substring(0,2),16)
+    const g = parseInt(h.substring(2,4),16)
+    const b = parseInt(h.substring(4,6),16)
+    const lum = (0.2126*r + 0.7152*g + 0.0722*b) / 255
+    return lum > 0.55 ? '#111' : '#fff'
+  }
+
+  const isMobile = useMediaQuery('(max-width:600px)')
+
   return (
-    <Paper sx={{ p: 3 }}>
-      <Typography variant="h5" sx={{ mb: 2 }}>
+    <Box sx={{
+      background: 'linear-gradient(135deg,#ffffff,#eef3f7 70%)',
+      borderRadius: 4,
+      p: { xs: 2, sm: 3 },
+      boxShadow: '0 6px 18px -6px rgba(0,0,0,0.25)',
+      color: '#1a2731'
+    }}>
+      <Typography variant="h4" sx={{ mb: 2, fontSize: { xs: '1.5rem', sm: '1.9rem' }, fontWeight: 700 }}>
         Trix Register
       </Typography>
 
-      <Box sx={{ mb: 2, display: 'grid', gridTemplateColumns: { xs: '1fr', md: '320px 1fr' }, gap: 2 }}>
-        <Box>
-          <FormControl fullWidth sx={{ mb: 1 }}>
-            <InputLabel>Kingdom Owner</InputLabel>
-            <Select value={owner} label="Kingdom Owner" onChange={(e) => setOwner(e.target.value as Player)}>
-              {DEFAULT_PLAYERS.map((p) => (
-                <MenuItem key={p} value={p}>
-                  {p}
-                </MenuItem>
+    {/* Control Panel */}
+    <Paper elevation={2} sx={{ mb: 3, p: { xs: 1.5, sm: 2 }, borderRadius: 3, background: '#ffffff', border: '1px solid #d7e0e7', color: '#1a2731' }}>
+        <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', md: '320px 1fr' } }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+            <FormControl fullWidth size="small">
+              <InputLabel sx={{ color: 'primary.light' }}>Kingdom Owner</InputLabel>
+              <Select value={owner} label="Kingdom Owner" onChange={(e) => setOwner(e.target.value as Player)}>
+                {DEFAULT_PLAYERS.map((p) => (
+                  <MenuItem key={p} value={p}>{p}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth size="small">
+              <InputLabel>Contract</InputLabel>
+              <Select value={contract} label="Contract" onChange={(e) => setContract(e.target.value as Contract)}>
+                {CONTRACTS.map((c) => {
+                  const disabled = (usage[owner] || []).includes(c)
+                  return (
+                    <MenuItem key={c} value={c} disabled={disabled}>
+                      <Box sx={{ display:'flex', alignItems:'center', gap:1 }}>
+                        <Box sx={{ width:12, height:12, borderRadius:'50%', background: contractColor[c], boxShadow:'0 0 0 2px rgba(255,255,255,0.15)' }} />
+                        <Typography variant="body2" sx={{ color: readableText(contractColor[c]), bgcolor: contractColor[c], px:.75, py:.25, borderRadius:1, fontWeight:600 }}>
+                          {c}
+                        </Typography>
+                        <Typography variant="caption" sx={{ opacity:.6 }}>{disabled ? 'used' : ''}</Typography>
+                      </Box>
+                    </MenuItem>
+                  )
+                })}
+              </Select>
+            </FormControl>
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Button variant="contained" size="small" onClick={addDeal} sx={{ textTransform:'none', fontWeight:600 }}>Add Deal</Button>
+              <Button variant="outlined" size="small" color="error" onClick={resetAll} sx={{ textTransform:'none' }}>Reset</Button>
+            </Box>
+            {error && (
+              <Typography color="error" variant="caption">{error}</Typography>
+            )}
+            <Divider sx={{ my: .5, opacity:.4 }} />
+            <Box sx={{ display:'flex', flexWrap:'wrap', gap: .75 }}>
+              {(usage[owner]||[]).map(u => (
+                <Chip key={u} label={u} size="small" sx={{ bgcolor: contractColor[u], color: readableText(contractColor[u]), fontWeight:600 }} />
               ))}
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth>
-            <InputLabel>Contract</InputLabel>
-            <Select
-              value={contract}
-              label="Contract"
-              onChange={(e) => setContract(e.target.value as Contract)}
-            >
-              {CONTRACTS.map((c) => {
-                const disabled = (usage[owner] || []).includes(c)
-                return (
-                  <MenuItem key={c} value={c} disabled={disabled}>
-                    {c} {disabled ? ' (used in kingdom)' : ''}
-                  </MenuItem>
-                )
-              })}
-            </Select>
-          </FormControl>
-        </Box>
-
-        <Box>
-          <Typography variant="body2">Enter values for players (meaning depends on contract):</Typography>
-          <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-            King: mark 1 for the player who collected the King of Hearts (they will get -75). For Diamonds/Girls/Collections enter counts. For Trex enter finishing place (1..4).
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 1, mt: 1, flexWrap: 'wrap' }}>
-            {DEFAULT_PLAYERS.map((p) => (
-              <TextField
-                key={p}
-                label={p}
-                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                type="number"
-                value={inputs[p] ?? 0}
-                onChange={(e) => handleInputChange(p, Number(e.target.value || 0))}
-                size="small"
-                sx={{ width: 100 }}
-              />
-            ))}
+              {usage[owner].length===0 && <Typography variant="caption" sx={{ opacity:.7 }}>No contracts used yet.</Typography>}
+            </Box>
           </Box>
-
-          {error && (
-            <Typography color="error" variant="caption" sx={{ display: 'block', mt: 1 }}>
-              {error}
+          <Box>
+            <Typography variant="subtitle2" sx={{ mb: .5, fontWeight:600 }}>Values per player</Typography>
+            <Typography variant="caption" sx={{ display: 'block', lineHeight: 1.35, mb:1, color:'#4b5b67' }}>
+              King: mark 1 for collector (-75). Diamonds/Girls/Collections = counts. Trex = place 1..4.
             </Typography>
-          )}
-
-          {/* Remaining count display for limited contracts */}
-          {CONTRACT_MAX[contract] !== null && (
-            <Typography variant="caption" sx={{ display: 'block', mt: 1 }}>
-              Remaining: {((CONTRACT_MAX[contract] as number) - DEFAULT_PLAYERS.reduce((a, p) => a + (inputs[p] || 0), 0))}
-            </Typography>
-          )}
-
-          <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
-            <Button variant="contained" onClick={addDeal}>
-              Add Deal
-            </Button>
-            <Button variant="outlined" color="error" onClick={resetAll}>
-              Reset All
-            </Button>
+            <Box sx={{ display:'grid', gap:1, gridTemplateColumns:{ xs:'repeat(2,1fr)', sm:'repeat(4,1fr)' } }}>
+              {DEFAULT_PLAYERS.map(p => (
+                <TextField
+                  key={p}
+                  label={p}
+                  size="small"
+                  type="number"
+                  value={inputs[p] ?? 0}
+                  onChange={(e)=> handleInputChange(p, Number(e.target.value || 0))}
+                  inputProps={{ inputMode:'numeric', pattern:'[0-9]*' }}
+                  sx={{
+                    '& .MuiInputBase-root': { bgcolor:'#f5f7fa', color:'#1a2731', borderRadius:1 },
+                    '& label': { color:'#5d6b75' },
+                    '& .MuiInputBase-root.Mui-focused': { boxShadow:'0 0 0 2px #0056d633' },
+                  }}
+                />
+              ))}
+            </Box>
+            {CONTRACT_MAX[contract] !== null && (
+              <Typography variant="caption" sx={{ display:'block', mt:1, fontWeight:600 }}>
+                Remaining: {(CONTRACT_MAX[contract] as number) - DEFAULT_PLAYERS.reduce((a,p)=> a + (inputs[p]||0),0)}
+              </Typography>
+            )}
           </Box>
         </Box>
-      </Box>
+      </Paper>
 
-      <Box sx={{ mb: 2 }}>
-        <Typography variant="subtitle1">Running Totals</Typography>
-        <Box sx={{ display: 'flex', gap: 2, mt: 1 }}>
-          {DEFAULT_PLAYERS.map((p) => (
-            <Paper key={p} sx={{ p: 1, minWidth: 80 }}>
-              <Typography variant="caption">{p}</Typography>
-              <Typography variant="h6">{totals[p]}</Typography>
+      {/* Scoreboard */}
+      <Box sx={{ mb:3 }}>
+        <Typography variant="h6" sx={{ fontWeight:700, mb:1 }}>Running Totals</Typography>
+        <Box sx={{ display:'grid', gap:1, gridTemplateColumns:{ xs:'repeat(2,1fr)', sm:'repeat(5, minmax(120px,1fr))' } }}>
+          {DEFAULT_PLAYERS.map(p => (
+            <Paper key={p} elevation={1} sx={{ p:1, textAlign:'center', background:'#ffffff', border:'1px solid #d7e0e7', borderRadius:2 }}>
+              <Typography variant="caption" sx={{ fontWeight:600 }}>{p}</Typography>
+              <Chip label={totals[p]} size="small" color={scoreTone(totals[p])} sx={{ mt:.4 }} />
             </Paper>
           ))}
-          <Paper sx={{ p: 1, minWidth: 160 }}>
-            <Typography variant="caption">Partners</Typography>
-            <Typography variant="body2">P1+P3: {partners.team13}</Typography>
-            <Typography variant="body2">P2+P4: {partners.team24}</Typography>
+          <Paper elevation={1} sx={{ p:1, background:'#ffffff', border:'1px solid #d7e0e7', borderRadius:2 }}>
+            <Typography variant="caption" sx={{ fontWeight:600 }}>Partners</Typography>
+            <Chip label={`P1+P3: ${partners.team13}`} size="small" color={scoreTone(partners.team13)} sx={{ mt:.4 }} />
+            <Chip label={`P2+P4: ${partners.team24}`} size="small" color={scoreTone(partners.team24)} sx={{ mt:.4 }} />
           </Paper>
         </Box>
       </Box>
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Contract</TableCell>
-            <TableCell>Values (P1,P2,P3,P4)</TableCell>
-            <TableCell>Scores (P1,P2,P3,P4)</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {deals.map((d) => (
-              <TableRow key={d.id}>
-                <TableCell>{d.contract} (owner: {d.owner})</TableCell>
-                <TableCell>
-                  {DEFAULT_PLAYERS.map((p) => `${p}:${d.values[p] ?? 0}`).join(', ')}
-                </TableCell>
-                <TableCell>
-                  {DEFAULT_PLAYERS.map((p) => `${p}:${d.scores[p] ?? 0}`).join(', ')}
-                </TableCell>
-                <TableCell>
-                  <IconButton size="small" onClick={() => removeDeal(d.id)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
+      {/* Deals listing - responsive */}
+      {isMobile ? (
+        <Box sx={{ display:'flex', flexDirection:'column', gap:1.25 }}>
+          {deals.length === 0 && (
+            <Typography variant="caption" sx={{ opacity:.7 }}>No deals recorded yet.</Typography>
+          )}
+          {deals.map(d => (
+            <Paper key={d.id} elevation={1} sx={{ p:1.25, border:'1px solid #d7e0e7', borderRadius:2 }}>
+              <Box sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', mb:.75 }}>
+                <Box sx={{ display:'flex', alignItems:'center', gap:.75 }}>
+                  <Box sx={{ width:16, height:16, borderRadius:'50%', background: contractColor[d.contract] }} />
+                  <Chip label={d.contract} size="small" sx={{ bgcolor:contractColor[d.contract], color: readableText(contractColor[d.contract]), fontWeight:600 }} />
+                  <Typography variant="caption" sx={{ opacity:.6 }}>Owner: {d.owner}</Typography>
+                </Box>
+                <IconButton size="small" onClick={()=> removeDeal(d.id)} aria-label="delete" color="error">
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Box>
+              <Box sx={{ display:'grid', gap:.5, gridTemplateColumns:'repeat(2,1fr)', fontSize:'.7rem' }}>
+                <Box>
+                  <Typography variant="caption" sx={{ fontWeight:600 }}>Values</Typography>
+                  <Typography variant="caption" display="block">
+                    {DEFAULT_PLAYERS.map(p => `${p}:${d.values[p] ?? 0}`).join(', ')}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="caption" sx={{ fontWeight:600 }}>Scores</Typography>
+                  <Typography variant="caption" display="block">
+                    {DEFAULT_PLAYERS.map(p => `${p}:${d.scores[p] ?? 0}`).join(', ')}
+                  </Typography>
+                </Box>
+              </Box>
+            </Paper>
           ))}
-        </TableBody>
-      </Table>
-    </Paper>
+        </Box>
+      ) : (
+        <Paper elevation={2} sx={{
+          overflow:'hidden',
+          borderRadius:3,
+          background:'#ffffff',
+          border:'1px solid #d7e0e7'
+        }}>
+          <Box sx={{ overflowX:'auto', WebkitOverflowScrolling:'touch' }}>
+            <Table size="small" sx={{ minWidth:680 }}>
+              <TableHead>
+                <TableRow sx={{ background:'#0056d6', '& th':{ color:'#ffffff', fontWeight:600 } }}>
+                  <TableCell sx={{ whiteSpace:'nowrap' }}>Contract / Owner</TableCell>
+                  <TableCell>Values</TableCell>
+                  <TableCell>Scores</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {deals.map(d => (
+                  <TableRow key={d.id} hover sx={{ '&:nth-of-type(odd)': { background:'#f5f7fa' }, '&:nth-of-type(even)': { background:'#ffffff' } }}>
+                    <TableCell sx={{ fontWeight:600 }}>
+                      <Tooltip title={`Owner: ${d.owner}`}>
+                        <Box sx={{ display:'flex', alignItems:'center', gap:.75 }}>
+                          <Box sx={{ width:14, height:14, borderRadius:'50%', background: contractColor[d.contract], boxShadow:'0 0 0 2px #ffffff' }} />
+                          <Chip label={d.contract} size="small" sx={{ bgcolor:contractColor[d.contract], color: readableText(contractColor[d.contract]), fontWeight:600 }} />
+                          <Typography variant="caption" sx={{ opacity:.6 }}>({d.owner})</Typography>
+                        </Box>
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell sx={{ fontSize:'0.75rem' }}>
+                      {DEFAULT_PLAYERS.map(p => `${p}:${d.values[p] ?? 0}`).join(', ')}
+                    </TableCell>
+                    <TableCell sx={{ fontSize:'0.75rem' }}>
+                      {DEFAULT_PLAYERS.map(p => `${p}:${d.scores[p] ?? 0}`).join(', ')}
+                    </TableCell>
+                    <TableCell>
+                      <IconButton size="small" onClick={()=> removeDeal(d.id)} aria-label="delete" color="error">
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {deals.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={4}>
+                      <Typography variant="caption" sx={{ opacity:.7 }}>No deals recorded yet.</Typography>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </Box>
+        </Paper>
+      )}
+    </Box>
   )
 }
 
