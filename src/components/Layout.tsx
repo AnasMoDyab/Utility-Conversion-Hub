@@ -13,17 +13,38 @@ import {
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
+import ColorModeToggle from './ColorModeToggle'
+
+import { motion, AnimatePresence } from 'framer-motion'
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { Link, useLocation } from 'react-router-dom'
+import HighContrastToggle from './HighContrastToggle'
+import GlobalContainer from './GlobalContainer'
+import { Button } from '@mui/material'
+
+const ButtonLink: React.FC<{ to: string; label: string; currentPath: string }> = ({ to, label, currentPath }) => (
+  <Button
+    component={Link}
+    to={to}
+    color={currentPath === to ? 'secondary' : 'inherit'}
+    variant={currentPath === to ? 'contained' : 'text'}
+    size="small"
+    sx={{ mr: 1 }}
+  >
+    {label}
+  </Button>
+)
 
 const drawerWidth = 240
 
 type NavItem = { label: string; path: string }
 type NavCategory = { title: string; items: NavItem[] }
 
-const categories: NavCategory[] = [
-  { title: 'Home', items: [{ label: 'Dashboard', path: '/' }] },
+export const categories: NavCategory[] = [
+  { title: 'Home', items: [{ label: 'Dashboard', path: '/dashboard' }] },
   {
     title: 'Conversions',
     items: [
@@ -108,6 +129,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [openCats, setOpenCats] = useState<Record<string, boolean>>(() =>
+    categories.reduce((acc, cat) => ({ ...acc, [cat.title]: true }), {})
+  )
 
   const toggleDrawer = () => setMobileOpen(o => !o)
   const closeDrawer = () => setMobileOpen(false)
@@ -127,34 +151,60 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <Divider />
       <Box sx={{ flex: 1, overflowY: 'auto', py: 1 }}>
         <List dense={isMobile}>
-          {categories.map((cat) => (
-            <Box key={cat.title} sx={{ mb: 2 }}>
-              <Typography
-                variant="caption"
-                sx={{
-                  color: 'teal',
-                  pl: 2,
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: 0.5,
-                }}
-              >
-                {cat.title}
-              </Typography>
-              {cat.items.map((item) => (
-                <ListItemButton
-                  key={item.path}
-                  component={Link}
-                  to={item.path}
-                  selected={location.pathname === item.path}
-                  sx={{ py: 0.5 }}
-                  onClick={() => { if (isMobile) closeDrawer() }}
-                >
-                  <ListItemText primary={item.label} />
-                </ListItemButton>
-              ))}
-            </Box>
-          ))}
+          {categories.map((cat) => {
+            const isOpen = openCats[cat.title]
+            return (
+              <Box key={cat.title} sx={{ mb: 1.5 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', pl: 1.5, pr: 1 }}>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: 'teal',
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: 0.5,
+                      flexGrow: 1,
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => setOpenCats(o => ({ ...o, [cat.title]: !o[cat.title] }))}
+                  >
+                    {cat.title}
+                  </Typography>
+                  <IconButton
+                    size="small"
+                    aria-label={isOpen ? 'collapse category' : 'expand category'}
+                    onClick={() => setOpenCats(o => ({ ...o, [cat.title]: !o[cat.title] }))}
+                  >
+                    {isOpen ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+                  </IconButton>
+                </Box>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25 }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      {cat.items.map((item) => (
+                        <ListItemButton
+                          key={item.path}
+                          component={Link}
+                          to={item.path}
+                          selected={location.pathname === item.path}
+                          sx={{ py: 0.5 }}
+                          onClick={() => { if (isMobile) closeDrawer() }}
+                        >
+                          <ListItemText primary={item.label} />
+                        </ListItemButton>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </Box>
+            )
+          })}
         </List>
       </Box>
     </Box>
@@ -172,6 +222,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Utility & Conversion Hub
           </Typography>
+          {/* Quick Dashboard button (hidden on small screens) */}
+          {!isMobile && <ButtonLink to="/dashboard" label="Dashboard" currentPath={location.pathname} />}
+          <ColorModeToggle />
+          <HighContrastToggle />
         </Toolbar>
       </AppBar>
       {/* Drawer for desktop */}
@@ -203,12 +257,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           {drawerContent}
         </Drawer>
       )}
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: { xs: 1.5, sm: 2, md: 3 }, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
         <Toolbar />
-        {children}
+        <GlobalContainer>{children}</GlobalContainer>
       </Box>
     </Box>
   )

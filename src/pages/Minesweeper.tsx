@@ -130,18 +130,20 @@ const Minesweeper: React.FC = () => {
         <Select value={rows} onChange={(e) => setRows(Number(e.target.value))}>
           <MenuItem value={9}>9 rows</MenuItem>
           <MenuItem value={16}>16 rows</MenuItem>
+           <MenuItem value={30}>30 rows</MenuItem>
         </Select>
         <Select value={cols} onChange={(e) => setCols(Number(e.target.value))}>
           <MenuItem value={9}>9 cols</MenuItem>
-          <MenuItem value={30}>30 cols</MenuItem>
+          <MenuItem value={20}>20 cols</MenuItem>
+          <MenuItem value={60}>60 cols</MenuItem>
         </Select>
         <Select
           value={mines}
           onChange={(e) => setMines(Number(e.target.value))}
         >
           <MenuItem value={10}>10 mines</MenuItem>
-          <MenuItem value={40}>40 mines</MenuItem>
-          <MenuItem value={99}>99 mines</MenuItem>
+          <MenuItem value={20}>30 mines</MenuItem>
+          <MenuItem value={60}>60 mines</MenuItem>
         </Select>
         <Button variant="contained" onClick={reset}>
           Reset

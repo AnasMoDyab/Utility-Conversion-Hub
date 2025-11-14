@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, TextField, MenuItem, Stack, Box, Alert, CircularProgress } from '@mui/material';
+import { Card, CardContent, Typography, TextField, MenuItem, Stack, Box, Alert } from '@mui/material';
+import SkeletonSection from '../components/SkeletonSection';
 import { fetchLatestRates, convert } from '../services/currency';
 
 const Currency: React.FC = () => {
@@ -37,7 +38,7 @@ const Currency: React.FC = () => {
         <Typography variant="body2" color="text.secondary" gutterBottom>
           <b> </b> Konverter beløp mellom valutaer ved hjelp av sanntidskurser fra Open Exchange Rates. Gratis-planen bruker alltid USD som basis.
         </Typography>
-        {loading && <Alert severity="info" icon={<CircularProgress size={18} />}>Laster kurser...</Alert>}
+        {loading && <SkeletonSection lines={6} />}
         {error && <Alert severity="error">Feil ved henting av kurser: {error}</Alert>}
         <Stack spacing={2}>
           <Box sx={{ display: 'flex', gap: 2 }}>

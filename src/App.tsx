@@ -1,9 +1,11 @@
 import React from 'react';
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import './App.css';
 import Layout from './components/Layout';
 import Home from './Home';
+import Dashboard from './pages/Dashboard';
 import Currency from './pages/Currency';
 import Weight from './pages/Weight';
 import LengthPage from './pages/LengthPage';
@@ -60,29 +62,30 @@ import TimezonePlannerPage from './pages/TimezonePlannerPage';
 import ColorPalettePage from './pages/ColorPalettePage';
 import RegexTesterPage from './pages/RegexTesterPage';
 import QRCodeVCardPage from './pages/QRCodeVCardPage';
+import PageTransition from './components/PageTransition';
 
 
 
 
 
 function App() {
-  // Use PUBLIC_URL as basename so routing works when hosted on GitHub Pages
-  const basename = process.env.PUBLIC_URL || '/';
-
+  const location = useLocation();
+  const wrap = (node: React.ReactNode) => <PageTransition>{node}</PageTransition>;
   return (
-    <Router basename={basename}>
       <Layout>
-        <Routes>
+        <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Home />} />
-          <Route path="/currency" element={<Currency />} />
-          <Route path="/weight" element={<Weight />} />
-          <Route path="/length" element={<LengthPage />} />
-          <Route path="/temperature" element={<TemperaturePage />} />
-          <Route path="/volume" element={<VolumePage />} />
-          <Route path="/speed" element={<SpeedPage />} />
-          <Route path="/datetime" element={<DateTimeTools />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/currency" element={wrap(<Currency />)} />
+          <Route path="/weight" element={wrap(<Weight />)} />
+          <Route path="/length" element={wrap(<LengthPage />)} />
+          <Route path="/temperature" element={wrap(<TemperaturePage />)} />
+          <Route path="/volume" element={wrap(<VolumePage />)} />
+          <Route path="/speed" element={wrap(<SpeedPage />)} />
+          <Route path="/datetime" element={wrap(<DateTimeTools />)} />
           <Route path="/unit-price" element={<UnitPricePage />} />
-          <Route path="/bmi" element={<BMIPage />} />
+          <Route path="/bmi" element={wrap(<BMIPage />)} />
           <Route path="/tip-tax" element={<TipTaxPage />} />
           <Route path="/percentage" element={<PercentagePage />} />
           <Route path="/math" element={<MathToolsPage />} />
@@ -126,13 +129,13 @@ function App() {
           <Route path="/tenzies" element={<Tenzies />} />
           <Route path="/puzzle-15" element={<Puzzle15 />} />
           <Route path="/trix-register" element={<RegisterTrix />} />
-          <Route path="/timezone-planner" element={<TimezonePlannerPage />} />
+          <Route path="/timezone-planner" element={wrap(<TimezonePlannerPage />)} />
           <Route path="/color-palette" element={<ColorPalettePage />} />
           <Route path="/regex" element={<RegexTesterPage />} />
           <Route path="/qr-vcard" element={<QRCodeVCardPage />} />
         </Routes>
+        </AnimatePresence>
       </Layout>
-    </Router>
   );
 }
 

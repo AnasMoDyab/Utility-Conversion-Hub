@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ThemeProvider, CssBaseline } from '@mui/material';
-import theme from './theme';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ColorModeProvider } from './ColorModeContext';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -13,10 +13,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
+    <ColorModeProvider>
+      <Router basename={process.env.PUBLIC_URL || '/'}>
+        <App />
+      </Router>
+    </ColorModeProvider>
   </React.StrictMode>
 );
 

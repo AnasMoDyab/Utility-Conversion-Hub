@@ -13,7 +13,7 @@ const generateDice = () => Array.from({ length: 10 }, (_, i) => newDie(i))
 
 // small confetti piece generator using CSS + absolute elements
 const Confetti: React.FC<{ onDone?: () => void }> = ({ onDone }) => {
-  const pieces = Array.from({ length: 24 })
+  const pieces = Array.from({ length: 100 })
   useEffect(() => {
     const t = setTimeout(() => onDone && onDone(), 1500)
     return () => clearTimeout(t)

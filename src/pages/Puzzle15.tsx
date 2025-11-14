@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Paper, Typography, Box, Button } from '@mui/material'
+import { Paper, Typography, Box, Button, useTheme } from '@mui/material'
 
 type Tile = { id: number; value: number | null }
 
@@ -111,6 +111,8 @@ const Puzzle15: React.FC = () => {
     setMoves((m) => m + 1)
   }
 
+  const theme = useTheme()
+
   return (
     <Paper sx={{ p: 2 }}>
       <Typography variant="h6">15 Puzzle</Typography>
@@ -126,10 +128,11 @@ const Puzzle15: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: t.value === null ? 'transparent' : '#fff',
-              border: t.value === null ? '1px dashed #ddd' : '2px solid #ccc',
+              background: t.value === null ? 'transparent' : theme.palette.background.paper,
+              border: t.value === null ? `1px dashed ${theme.palette.divider}` : `2px solid ${theme.palette.divider}`,
               borderRadius: 1,
               fontSize: 20,
+              color: t.value === null ? theme.palette.text.secondary : theme.palette.text.primary,
               cursor: t.value === null ? 'default' : 'pointer',
               userSelect: 'none',
             }}
